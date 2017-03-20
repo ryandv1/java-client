@@ -8,6 +8,7 @@ import io.split.engine.experiments.ParsedSplit;
 import io.split.engine.experiments.SplitFetcher;
 import io.split.engine.matchers.AllKeysMatcher;
 import io.split.engine.matchers.CombiningMatcher;
+import io.split.grammar.Treatments;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -35,7 +36,16 @@ public class SplitManagerImplTest {
         String existent = "existent";
         SplitFetcher splitFetcher = Mockito.mock(SplitFetcher.class);
 
-        ParsedSplit response = new ParsedSplit("FeatureName", 123, true, "off", Lists.newArrayList(getTestCondition("off")), "traffic", 456L);
+        ParsedSplit response = ParsedSplit.builder()
+                .split("FeatureName")
+                .seed(123)
+                .killed(true)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(Lists.newArrayList(getTestCondition("off")))
+                .trafficTypeName("traffic")
+                .changeNumber(456L)
+                .build();
+
         Mockito.when(splitFetcher.fetch(existent)).thenReturn(response);
 
         SplitManagerImpl splitManager = new SplitManagerImpl(splitFetcher);
@@ -60,7 +70,16 @@ public class SplitManagerImplTest {
     public void splitsCallWithSplit() {
         SplitFetcher splitFetcher = Mockito.mock(SplitFetcher.class);
         List<ParsedSplit> parsedSplits = Lists.newArrayList();
-        ParsedSplit response = new ParsedSplit("FeatureName", 123, true, "off", Lists.newArrayList(getTestCondition("off")), "traffic", 456L);
+        ParsedSplit response = ParsedSplit.builder()
+                .split("FeatureName")
+                .seed(123)
+                .killed(true)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(Lists.newArrayList(getTestCondition("off")))
+                .trafficTypeName("traffic")
+                .changeNumber(456L)
+                .build();
+
         parsedSplits.add(response);
 
         Mockito.when(splitFetcher.fetchAll()).thenReturn(parsedSplits);
@@ -87,7 +106,16 @@ public class SplitManagerImplTest {
     public void splitNamesCallWithSplit() {
         SplitFetcher splitFetcher = Mockito.mock(SplitFetcher.class);
         List<ParsedSplit> parsedSplits = Lists.newArrayList();
-        ParsedSplit response = new ParsedSplit("FeatureName", 123, true, "off", Lists.newArrayList(getTestCondition("off")), "traffic", 456L);
+        ParsedSplit response = ParsedSplit.builder()
+                .split("FeatureName")
+                .seed(123)
+                .killed(true)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(Lists.newArrayList(getTestCondition("off")))
+                .trafficTypeName("traffic")
+                .changeNumber(456L)
+                .build();
+
         parsedSplits.add(response);
 
         Mockito.when(splitFetcher.fetchAll()).thenReturn(parsedSplits);

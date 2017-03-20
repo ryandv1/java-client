@@ -1,5 +1,9 @@
 NEWS
 
+1.1.7
+- When starting Split in 'localhost' mode, the location of the .splits file can be specified
+- Added ImpressionListener
+
 1.1.6
 - Removing deprecated SplitClientBuilder
 

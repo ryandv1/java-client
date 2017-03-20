@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ParsedSplit {
 
-    private final String _feature;
+    private final String _split;
     private final int _seed;
     private final boolean _killed;
     private final String _defaultTreatment;
@@ -22,12 +22,16 @@ public class ParsedSplit {
     private final String _trafficTypeName;
     private final long _changeNumber;
 
-    public ParsedSplit(String feature, int seed, boolean killed, String defaultTreatment, List<ParsedCondition> matcherAndSplits, String trafficTypeName, long changeNumber) {
-        _feature = feature;
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    private ParsedSplit(String feature, int seed, boolean killed, String defaultTreatment, List<ParsedCondition> parsedConditions, String trafficTypeName, long changeNumber) {
+        _split = feature;
         _seed = seed;
         _killed = killed;
         _defaultTreatment = defaultTreatment;
-        _parsedCondition = ImmutableList.copyOf(matcherAndSplits);
+        _parsedCondition = ImmutableList.copyOf(parsedConditions);
         _trafficTypeName = trafficTypeName;
         _changeNumber = changeNumber;
         if (_defaultTreatment == null) {
@@ -36,7 +40,7 @@ public class ParsedSplit {
     }
 
     public String feature() {
-        return _feature;
+        return _split;
     }
 
     public int seed() {
@@ -62,7 +66,7 @@ public class ParsedSplit {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + _feature.hashCode();
+        result = 31 * result + _split.hashCode();
         result = 31 * result + (int)(_seed ^ (_seed >>> 32));
         result = 31 * result + (_killed ? 1 : 0);
         result = 31 * result + _defaultTreatment.hashCode();
@@ -80,7 +84,7 @@ public class ParsedSplit {
 
         ParsedSplit other = (ParsedSplit) obj;
 
-        return _feature.equals(other._feature)
+        return _split.equals(other._split)
                 && _seed == other._seed
                 && _killed == other._killed
                 && _defaultTreatment.equals(other._defaultTreatment)
@@ -93,7 +97,7 @@ public class ParsedSplit {
     public String toString() {
         StringBuilder bldr = new StringBuilder();
         bldr.append("name:");
-        bldr.append(_feature);
+        bldr.append(_split);
         bldr.append(", seed:");
         bldr.append(_seed);
         bldr.append(", killed:");
@@ -109,4 +113,89 @@ public class ParsedSplit {
         return bldr.toString();
 
     }
+
+    public static final class Builder {
+        private String _split;
+        private Integer _seed;
+        private Boolean _killed;
+        private String _defaultTreatment;
+        private List<ParsedCondition> _parsedConditions;
+        private String _trafficTypeName;
+        private Long _changeNumber;
+
+        private Builder() {
+        }
+
+        public Builder split(String split) {
+            this._split = split;
+            return this;
+        }
+
+        public Builder seed(Integer seed) {
+            this._seed = seed;
+            return this;
+        }
+
+        public Builder killed(Boolean killed) {
+            this._killed = killed;
+            return this;
+        }
+
+        public Builder defaultTreatment(String defaultTreatment) {
+            this._defaultTreatment = defaultTreatment;
+            return this;
+        }
+
+        public Builder parsedConditions(List<ParsedCondition> parsedConditions) {
+            this._parsedConditions = parsedConditions;
+            return this;
+        }
+
+        public Builder trafficTypeName(String trafficTypeName) {
+            this._trafficTypeName = trafficTypeName;
+            return this;
+        }
+
+        public Builder changeNumber(Long changeNumber) {
+            this._changeNumber = changeNumber;
+            return this;
+        }
+
+        public ParsedSplit build() {
+            String missing = "";
+            if (_split == null) {
+                missing += " split name";
+            }
+            if (_seed == null) {
+                missing += " seed";
+            }
+            if (_killed == null) {
+                missing += " killed";
+            }
+            if (_defaultTreatment == null) {
+                missing += " defaultTreatment";
+            }
+            if (_parsedConditions == null) {
+                missing += " parsedConditions";
+            }
+            if (_trafficTypeName == null) {
+                missing += " trafficTypeName";
+            }
+            if (_changeNumber == null) {
+                missing += " changeNumber";
+            }
+            if (!missing.isEmpty()) {
+                throw new IllegalStateException("Missing required properties:" + missing);
+            }
+            return new ParsedSplit(
+                    this._split,
+                    this._seed.intValue(),
+                    this._killed.booleanValue(),
+                    this._defaultTreatment,
+                    this._parsedConditions,
+                    this._trafficTypeName,
+                    this._changeNumber);
+        }
+    }
+
 }

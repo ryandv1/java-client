@@ -139,7 +139,6 @@ public class HashingTest {
             ranges[(bucket-1)/10]++;
         }
 
-        System.out.println(buckets);
         System.out.println(Arrays.toString(ranges));
     }
 
@@ -163,5 +162,44 @@ public class HashingTest {
         System.out.println(hash + " collisions " + collisions + " percentage: " + (100f * collisions / keys.size()));
     }
 
+    private void spreadBySeedBucket(int seed1, int seed2, MyHash hash, List<String> keys, int bucketRatio) {
+
+        int collisions = 0;
+        Iterator<String> iter = keys.iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+
+            int bucket1 = Splitter.bucket(hash.hash(seed1, key)) / bucketRatio;
+            int bucket2 = Splitter.bucket(hash.hash(seed2, key)) / bucketRatio;
+            if (bucket1 == bucket2) {
+                collisions++;
+            }
+        }
+
+        System.out.println(hash + " collisions " + collisions + " percentage: " + (100f * collisions / keys.size()));
+    }
+
+    @Test
+    public void twilioTest() {
+        Random r = new Random();
+        int seed1 = r.nextInt();
+        int seed2 = Integer.reverse(seed1);
+
+        List<String> randomUUIDs = randomUUIDs(216553);
+        List<String> sequentialIDs = sequentialIds(216553);
+        List<String> mshIds = mshIds();
+
+        System.out.println("Bucket Spread by Seed Random UUIDs");
+        spreadBySeedBucket(seed1, seed2, new MyHash.Murmur32Hash(), randomUUIDs, 10);
+        spreadBySeedBucket(seed1, seed2, new MyHash.SeededNaturalHash(), randomUUIDs, 10);
+
+        System.out.println("Bucket Spread by Seed Sequential UUIDs");
+        spreadBySeedBucket(seed1, seed2, new MyHash.Murmur32Hash(), sequentialIDs, 10);
+        spreadBySeedBucket(seed1, seed2, new MyHash.SeededNaturalHash(), sequentialIDs, 10);
+
+        System.out.println("Bucket Spread by Seed MSH UUIDs");
+        spreadBySeedBucket(seed1, seed2, new MyHash.Murmur32Hash(), mshIds, 10);
+        spreadBySeedBucket(seed1, seed2, new MyHash.SeededNaturalHash(), mshIds, 10);
+    }
 
 }

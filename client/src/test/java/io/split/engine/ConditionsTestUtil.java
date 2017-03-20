@@ -1,7 +1,19 @@
 package io.split.engine;
 
 import com.google.common.collect.Lists;
-import io.split.client.dtos.*;
+import io.split.client.dtos.BetweenMatcherData;
+import io.split.client.dtos.Condition;
+import io.split.client.dtos.ConditionType;
+import io.split.client.dtos.DataType;
+import io.split.client.dtos.KeySelector;
+import io.split.client.dtos.Matcher;
+import io.split.client.dtos.MatcherCombiner;
+import io.split.client.dtos.MatcherGroup;
+import io.split.client.dtos.MatcherType;
+import io.split.client.dtos.Partition;
+import io.split.client.dtos.UnaryNumericMatcherData;
+import io.split.client.dtos.UserDefinedSegmentMatcherData;
+import io.split.client.dtos.WhitelistMatcherData;
 
 import java.util.List;
 
@@ -18,6 +30,7 @@ public class ConditionsTestUtil {
         matcherGroup.matchers = Lists.newArrayList(matcher1);
 
         Condition c = new Condition();
+        c.conditionType = ConditionType.ROLLOUT;
         c.matcherGroup = matcherGroup;
         c.partitions = partitions;
 
@@ -30,17 +43,18 @@ public class ConditionsTestUtil {
         matcherGroup.matchers = Lists.newArrayList(matcher1, matcher2);
 
         Condition c = new Condition();
+        c.conditionType = ConditionType.ROLLOUT;
         c.matcherGroup = matcherGroup;
         c.partitions = partitions;
 
         return c;
     }
 
-    public static Condition makeWhitelistCondition(List<String> whitelist, List<Partition> partitions) {
-        return makeWhitelistCondition(whitelist, partitions, false);
+    public static Condition makeWhitelistCondition(List<String> whitelist, List<Partition> partitions, ConditionType conditionType) {
+        return makeWhitelistCondition(whitelist, partitions, false, conditionType);
     }
 
-    public static Condition makeWhitelistCondition(List<String> whitelist, List<Partition> partitions, boolean negate) {
+    public static Condition makeWhitelistCondition(List<String> whitelist, List<Partition> partitions, boolean negate, ConditionType conditionType) {
         Matcher matcher = whitelistMatcher(whitelist, negate);
 
         MatcherGroup matcherGroup = new MatcherGroup();
@@ -48,6 +62,7 @@ public class ConditionsTestUtil {
         matcherGroup.matchers = Lists.newArrayList(matcher);
 
         Condition c = new Condition();
+        c.conditionType = conditionType;
         c.matcherGroup = matcherGroup;
         c.partitions = partitions;
 
@@ -77,11 +92,11 @@ public class ConditionsTestUtil {
         return matcher;
     }
 
-    public static Condition makeUserDefinedSegmentCondition(String segment, List<Partition> partitions) {
-        return makeUserDefinedSegmentCondition(segment, partitions, false);
+    public static Condition makeUserDefinedSegmentCondition(String segment, List<Partition> partitions, ConditionType conditionType) {
+        return makeUserDefinedSegmentCondition(segment, partitions, false, conditionType);
     }
 
-    public static Condition makeUserDefinedSegmentCondition(String segment, List<Partition> partitions, boolean negate) {
+    public static Condition makeUserDefinedSegmentCondition(String segment, List<Partition> partitions, boolean negate, ConditionType conditionType) {
         Matcher matcher = userDefinedSegmentMatcher(segment, negate);
 
         MatcherGroup matcherGroup = new MatcherGroup();
@@ -89,6 +104,7 @@ public class ConditionsTestUtil {
         matcherGroup.matchers = Lists.newArrayList(matcher);
 
         Condition c = new Condition();
+        c.conditionType = conditionType;
         c.matcherGroup = matcherGroup;
         c.partitions = partitions;
 
@@ -130,6 +146,7 @@ public class ConditionsTestUtil {
         matcherGroup.matchers = Lists.newArrayList(matcher);
 
         Condition c = new Condition();
+        c.conditionType = ConditionType.ROLLOUT;
         c.matcherGroup = matcherGroup;
         c.partitions = partitions;
 

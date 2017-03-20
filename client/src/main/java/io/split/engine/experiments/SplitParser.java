@@ -1,9 +1,21 @@
 package io.split.engine.experiments;
 
 import com.google.common.collect.Lists;
-import io.split.client.dtos.*;
+import io.split.client.dtos.Condition;
 import io.split.client.dtos.Matcher;
-import io.split.engine.matchers.*;
+import io.split.client.dtos.MatcherGroup;
+import io.split.client.dtos.Partition;
+import io.split.client.dtos.Split;
+import io.split.client.dtos.Status;
+import io.split.engine.matchers.AllKeysMatcher;
+import io.split.engine.matchers.AttributeMatcher;
+import io.split.engine.matchers.BetweenMatcher;
+import io.split.engine.matchers.CombiningMatcher;
+import io.split.engine.matchers.EqualToMatcher;
+import io.split.engine.matchers.GreaterThanOrEqualToMatcher;
+import io.split.engine.matchers.LessThanOrEqualToMatcher;
+import io.split.engine.matchers.UserDefinedSegmentMatcher;
+import io.split.engine.matchers.WhitelistMatcher;
 import io.split.engine.segments.Segment;
 import io.split.engine.segments.SegmentFetcher;
 import org.slf4j.Logger;
@@ -59,7 +71,16 @@ public final class SplitParser {
             parsedConditionList.add(new ParsedCondition(matcher, partitions, condition.label));
         }
 
-        return new ParsedSplit(split.name, split.seed, split.killed, split.defaultTreatment, parsedConditionList, split.trafficTypeName, split.changeNumber);
+        return ParsedSplit.builder()
+                .split(split.name)
+                .seed(split.seed)
+                .killed(split.killed)
+                .defaultTreatment(split.defaultTreatment)
+                .parsedConditions(parsedConditionList)
+                .trafficTypeName(split.trafficTypeName)
+                .changeNumber(split.changeNumber)
+                .build();
+
     }
 
     private CombiningMatcher toMatcher(MatcherGroup matcherGroup) {

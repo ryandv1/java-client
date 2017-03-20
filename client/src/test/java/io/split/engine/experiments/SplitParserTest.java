@@ -75,7 +75,15 @@ public class SplitParserTest {
         ParsedCondition parsedCondition = new ParsedCondition(combiningMatcher, partitions);
         List<ParsedCondition> listOfMatcherAndSplits = Lists.newArrayList(parsedCondition);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfMatcherAndSplits, "user", 1);
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfMatcherAndSplits)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
 
         assertThat(actual, is(equalTo(expected)));
     }
@@ -114,7 +122,15 @@ public class SplitParserTest {
         ParsedCondition parsedCondition2 = new ParsedCondition(CombiningMatcher.of(new UserDefinedSegmentMatcher(salespeople)), turnOff);
         List<ParsedCondition> listOfParsedConditions = Lists.newArrayList(parsedCondition1, parsedCondition2);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfParsedConditions, "user", 1);
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfParsedConditions)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
 
         assertThat(actual, is(equalTo(expected)));
     }
@@ -178,9 +194,17 @@ public class SplitParserTest {
         AttributeMatcher creationDateNotOlderThanAPointLogic = new AttributeMatcher("creation_date", new GreaterThanOrEqualToMatcher(1457386741L, DataType.DATETIME), true);
         CombiningMatcher combiningMatcher = new CombiningMatcher(MatcherCombiner.AND, Lists.newArrayList(employeesMatcherLogic, creationDateNotOlderThanAPointLogic));
         ParsedCondition parsedCondition = new ParsedCondition(combiningMatcher, partitions);
-        List<ParsedCondition> listOfMatcherAndSplits = Lists.newArrayList(parsedCondition);
+        List<ParsedCondition> listOfParsedConditions = Lists.newArrayList(parsedCondition);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfMatcherAndSplits, "user", 1);
+        ParsedSplit expected =  ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfParsedConditions)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
 
         assertThat(actual, is(equalTo(expected)));
     }
@@ -213,7 +237,15 @@ public class SplitParserTest {
         ParsedCondition parsedCondition = new ParsedCondition(combiningMatcher, partitions);
         List<ParsedCondition> listOfMatcherAndSplits = Lists.newArrayList(parsedCondition);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfMatcherAndSplits, "user", 1);
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfMatcherAndSplits)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
 
         assertThat(actual, is(equalTo(expected)));
     }
@@ -244,8 +276,15 @@ public class SplitParserTest {
         ParsedCondition parsedCondition = new ParsedCondition(combiningMatcher, partitions);
         List<ParsedCondition> listOfMatcherAndSplits = Lists.newArrayList(parsedCondition);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfMatcherAndSplits, "user", 1);
-
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfMatcherAndSplits)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
         assertThat(actual, is(equalTo(expected)));
     }
 
@@ -275,7 +314,15 @@ public class SplitParserTest {
         ParsedCondition parsedCondition = new ParsedCondition(combiningMatcher, partitions);
         List<ParsedCondition> listOfMatcherAndSplits = Lists.newArrayList(parsedCondition);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfMatcherAndSplits, "user", 1);
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfMatcherAndSplits)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
 
         assertThat(actual, is(equalTo(expected)));
     }
@@ -308,7 +355,15 @@ public class SplitParserTest {
         ParsedCondition parsedCondition = new ParsedCondition(combiningMatcher, partitions);
         List<ParsedCondition> listOfMatcherAndSplits = Lists.newArrayList(parsedCondition);
 
-        ParsedSplit expected = new ParsedSplit("first.name", 123, false, Treatments.OFF, listOfMatcherAndSplits, "user", 1);
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("first.name")
+                .seed(123)
+                .killed(false)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(listOfMatcherAndSplits)
+                .trafficTypeName("user")
+                .changeNumber(1L)
+                .build();
 
         assertThat(actual, is(equalTo(expected)));
     }

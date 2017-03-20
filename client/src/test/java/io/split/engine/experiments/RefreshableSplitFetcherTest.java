@@ -91,7 +91,15 @@ public class RefreshableSplitFetcherTest {
 
         ParsedCondition expectedParsedCondition = new ParsedCondition(CombiningMatcher.of(new AllKeysMatcher()), Lists.newArrayList(ConditionsTestUtil.partition("on", 10)));
         List<ParsedCondition> expectedListOfMatcherAndSplits = Lists.newArrayList(expectedParsedCondition);
-        ParsedSplit expected = new ParsedSplit("" + fetcher.changeNumber(), (int) fetcher.changeNumber(), false, Treatments.OFF, expectedListOfMatcherAndSplits, null, fetcher.changeNumber());
+        ParsedSplit expected = ParsedSplit.builder()
+                .split("" + fetcher.changeNumber())
+                .seed((int) fetcher.changeNumber())
+                .killed(true)
+                .defaultTreatment(Treatments.OFF)
+                .parsedConditions(expectedListOfMatcherAndSplits)
+                .trafficTypeName("traffic")
+                .changeNumber(fetcher.changeNumber())
+                .build();
 
         ParsedSplit actual = fetcher.fetch("" + fetcher.changeNumber());
 
