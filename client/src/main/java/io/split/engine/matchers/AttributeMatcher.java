@@ -39,7 +39,6 @@ public final class AttributeMatcher {
             return false;
         }
 
-
         return _matcher.match(value);
     }
 

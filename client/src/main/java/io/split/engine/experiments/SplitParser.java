@@ -13,6 +13,7 @@ import io.split.engine.matchers.BetweenMatcher;
 import io.split.engine.matchers.CombiningMatcher;
 import io.split.engine.matchers.EqualToMatcher;
 import io.split.engine.matchers.GreaterThanOrEqualToMatcher;
+import io.split.engine.matchers.HierarchicalMatcher;
 import io.split.engine.matchers.LessThanOrEqualToMatcher;
 import io.split.engine.matchers.UserDefinedSegmentMatcher;
 import io.split.engine.matchers.collections.ContainsAllOfSetMatcher;
@@ -105,6 +106,11 @@ public final class SplitParser {
                 checkNotNull(matcher.userDefinedSegmentMatcherData);
                 Segment segment = _segmentFetcher.segment(matcher.userDefinedSegmentMatcherData.segmentName);
                 delegate = new UserDefinedSegmentMatcher(segment);
+                break;
+            case IN_SPLIT:
+                checkNotNull(matcher.whitelistMatcherData);
+                checkNotNull(matcher.whitelistMatcherData);
+                delegate = new HierarchicalMatcher(matcher.whitelistMatcherData.whitelist);
                 break;
             case WHITELIST:
                 checkNotNull(matcher.whitelistMatcherData);
