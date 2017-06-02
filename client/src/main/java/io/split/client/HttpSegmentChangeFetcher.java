@@ -81,7 +81,5 @@ public final class HttpSegmentChangeFetcher implements SegmentChangeFetcher {
             Utils.forceClose(response);
             _metrics.time(PREFIX + ".time", System.currentTimeMillis() - start);
         }
-
-
     }
 }
