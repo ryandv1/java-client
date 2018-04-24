@@ -1,6 +1,5 @@
 package io.split.client;
 
-import com.google.common.collect.ImmutableMap;
 import io.split.client.api.Key;
 import io.split.grammar.Treatments;
 import org.slf4j.Logger;
@@ -21,11 +20,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class LocalhostSplitClient implements SplitClient {
     private static final Logger _log = LoggerFactory.getLogger(LocalhostSplitClient.class);
 
-    private Map<SplitAndKey, String> _map;
+    private Map<SplitAndKey, String> _splitKeyTreatmentMap;
 
     public LocalhostSplitClient(Map<SplitAndKey, String> map) {
-        checkNotNull(map, "map must not be null");
-        _map = map;
+        checkNotNull(map, "splitKeyTreatmentMap must not be null");
+        _splitKeyTreatmentMap = map;
     }
 
     @Override
@@ -35,13 +34,13 @@ public final class LocalhostSplitClient implements SplitClient {
         }
 
         SplitAndKey override = SplitAndKey.of(split, key);
-        if (_map.containsKey(override)) {
-            return _map.get(override);
+        if (_splitKeyTreatmentMap.containsKey(override)) {
+            return _splitKeyTreatmentMap.get(override);
         }
 
         SplitAndKey splitDefaultTreatment = SplitAndKey.of(split);
 
-        String treatment = _map.get(splitDefaultTreatment);
+        String treatment = _splitKeyTreatmentMap.get(splitDefaultTreatment);
 
         if (treatment == null) {
             return Treatments.CONTROL;
@@ -65,12 +64,12 @@ public final class LocalhostSplitClient implements SplitClient {
             _log.warn("A null map was passed as an update. Ignoring this update.");
             return;
         }
-        _map = map;
+        _splitKeyTreatmentMap = map;
     }
 
     @Override
     public void destroy() {
-        _map.clear();
+        _splitKeyTreatmentMap.clear();
     }
 
     @Override
